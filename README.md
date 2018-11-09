@@ -15,7 +15,6 @@ Ansible playbook for beginner
   => With sample 1: ansible-playbook -i testing_hosts playbook_setup_webserver.yml
 
 ## Directory Structure:
-.
 ├── README.md
 ├── playbook_setup_webserver.yml
 ├── playbook_use_loop.yml
@@ -65,7 +64,7 @@ Ansible playbook for beginner
 └── vars
     ├── common.yml
     ├── loop_data.yml
-    └── webserver.yml
+    └── webserver.yml  
 
 ## Author
 Tidusvn05 <tidusvn05@gmail.com>
