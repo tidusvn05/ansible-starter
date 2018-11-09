@@ -1,0 +1,19 @@
+
+
+- name: Ensure logs dir exist
+  file:
+    path: "{{root_dir}}/logs"
+    state: directory
+
+- name: Install nginx site with letsencrypt for sendy
+  template:
+    src: templates/nginx-le-sendy.j2
+    dest: /etc/nginx/sites-enabled/{{domain_name}}-le
+  notify: restart nginx
+
+- name: Add sendy cronjob
+  cron:
+    name: sendy_mailer
+    minute: "*/7"
+    user: tandat
+    job: "php {{root_dir}}/scheduled.php > /dev/null"

@@ -1,0 +1,13 @@
+<VirtualHost {{net_ip}}:80>
+  ServerName {{ domain_name }}
+  DocumentRoot {{ root_dir }}
+
+  Alias /.well-known/acme-challenge /var/www/letsencrypt/.well-known/acme-challenge
+
+  <Directory "/var/www/letsencrypt">
+    Options None
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+</VirtualHost>

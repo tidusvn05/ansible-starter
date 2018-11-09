@@ -1,0 +1,16 @@
+
+- name: debug
+  debug:
+    msg: "{{sites}}"
+
+# Setup git for all site from loop_data
+# using dictionary: with_dict
+- name: Setup git project
+  include_role:
+    name: setup_git_project
+  vars:
+    domain_name: "{{item.value.domain_name}}"
+    local_port: "{{item.value.local_port}}"
+    config: "{{item.value}}"
+  with_dict: "{{sites}}"
+

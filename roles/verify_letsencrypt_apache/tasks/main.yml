@@ -1,0 +1,21 @@
+
+- name: Print config path
+  debug: var=domainname
+  vars: 
+    domainname: "{{domain_name}}"
+
+- name: Create letsencrypt directory
+  file: path=/var/www/letsencrypt state=directory  
+
+- name: Install apache virtualhost for letsencrypt requests
+  template:
+    src: templates/apache-http.j2
+    dest: /etc/httpd/conf.d/{{domain_name}}.conf
+
+- name: restart apache
+  service: name=httpd state=reloaded
+
+- name: Create letsencrypt certificate
+  shell: /opt/letsencrypt/certbot-auto certonly -n --webroot -w /var/www/letsencrypt -m {{ letsencrypt_email }} --agree-tos -d {{ domain_name }}
+  args:
+    creates: /etc/letsencrypt/live/{{ domain_name }}-ssl.confg

@@ -1,0 +1,12 @@
+net_ip: 77.77.77.77
+sites:
+  site1:
+    domain_name: site1.tidusvn05.vn
+    git: "git@gitlab.com:tidusvn05/site1.git"
+    branch: master
+    root_dir: "/app/site1"
+  site2:
+    domain_name: site2.tidusvn05.vn
+    git: "git@gitlab.com:tidusvn05/site2.git"
+    branch: develop
+    root_dir: "/app/site2" 

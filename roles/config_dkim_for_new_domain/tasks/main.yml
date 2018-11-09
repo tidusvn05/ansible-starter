@@ -1,0 +1,44 @@
+
+# - name: Print config path
+#   debug: var=domainname
+#   vars: 
+#     domainname: "{{domain_name}}"
+  
+- name: check dkim file exist
+  stat: path={{common_dkim}}
+  register: dkim_file
+
+- name: Create common dkim
+  shell: amavisd-new genrsa {{common_dkim}} 1024
+  when: dkim_file.stat.exists == False
+
+- name: set owner for common dkim file
+  file: 
+    path: "{{common_dkim}}"
+    owner: amavis
+    group: amavis
+    mode: 0400
+
+- name: insert config dkim key for new domain
+  blockinfile:
+    path: /etc/amavis/conf.d/50-user
+    marker: "# {mark} DKIM KEY {{new_domain}}"
+    insertbefore: "#end_dkim_key_list"
+    backup: yes
+    content: |
+      dkim_key("{{new_domain}}", "dkim", "{{common_dkim}}");
+  when: new_domain is defined
+
+- name: insert config dkim signature for new domain
+  blockinfile:
+    path: /etc/amavis/conf.d/50-user
+    marker: "    # {mark} DKIM SIGNATURE {{new_domain}}"
+    insertbefore: "# End dkim signature"
+    # backup: yes
+    content: |
+           "{{new_domain}}"  => { d => "{{new_domain}}", a => 'rsa-sha256', ttl => 10*24*3600 },
+  when: new_domain is defined
+
+- name: restart amavis
+  service: name=amavis state=restarted
+  when: new_domain is defined

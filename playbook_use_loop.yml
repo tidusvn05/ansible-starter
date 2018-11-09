@@ -1,0 +1,10 @@
+
+- name: Install for all sites jv-it
+  hosts: jvit
+  become: true
+  roles:
+    - setup_all_sites
+  vars_files:
+    - vars/common.yml
+    - vars/loop_data.yml
+

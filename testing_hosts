@@ -1,0 +1,8 @@
+
+[web]
+77.77.77.77
+
+[database]
+52.199.21.77 ansible_user=tidusvn05
+
+

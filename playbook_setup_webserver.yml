@@ -1,0 +1,10 @@
+
+- name: Install letencrypt for web server
+  hosts: web
+  become: true # use sudo 
+  roles:
+    - setup_letsencrypt
+  vars_files:
+    - vars/common.yml
+    - vars/webserver.yml
+

@@ -1,0 +1,5 @@
+# Global variables for webserver
+
+domain_name: web-domain.vn
+root_dir: /var/www/website/current
+

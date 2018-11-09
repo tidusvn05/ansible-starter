@@ -1,0 +1,24 @@
+
+- name: debug
+  debug:
+    msg: "{{config}}"
+
+- name: check site dir exist
+  stat: path={{config.root_dir}}
+  register: site_dir
+
+- name: Ensure project dir exist
+  file:
+    path: "{{config.root_dir}}"
+    state: directory
+    owner: tandat
+    group: tandat
+  when: site_dir.stat.exists == False and config.git is defined
+
+- name: Clone project from git
+  become: false
+  git:
+    repo: "{{config.git}}"
+    dest: "{{config.root_dir}}"
+    version: "{{config.branch}}"
+  when: site_dir.stat.exists == False and config.git is defined
